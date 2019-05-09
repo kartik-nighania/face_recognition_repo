@@ -5,7 +5,7 @@ pip install -r requirements.txt
 ## to login to environment 
 source face_recognition_app/bin/activate
 
-## TO train:
+## TO train and run:
 
 python encode_faces.py --dataset dataset --encodings encodings.pickle
 
