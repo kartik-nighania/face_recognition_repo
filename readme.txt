@@ -27,3 +27,11 @@ scripts to use:
 python encode_faces.py --dataset dataset --encodings encodings.pickle
 python recognize_faces_video.py --encodings encodings.pickle
 python recognize_faces_image.py --encodings encodings.pickle --image examples/example_01.png
+
+
+mention installing dlib gpu if they have it. 
+give pip uninstall dlib
+then the readme file dlib code present in other folder
+
+
+write code to add the shape predictor file with wget create sh script maybe
