@@ -1,0 +1,5 @@
+find the face pose estimation angle for saving image in frontal face
+give the user instructions to keep an aligned face
+
+
+check the encoding calculation logic
