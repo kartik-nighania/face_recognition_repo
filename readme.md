@@ -9,7 +9,7 @@ source face_recognition_app/bin/activate
 
 python encode_faces.py --dataset dataset --encodings encodings.pickle
 
-python face_detection.py --shape-predictor shape_predictor_68_face_landmarks.dat --encodings encodings.pickle --id-images dataset --camera 0
+python face_detection_and_recognition.py --shape-predictor shape_predictor_68_face_landmarks.dat --encodings encodings.pickle --dataset dataset --camera 0
 
 ## BUTTONS
 q on the image to close the app

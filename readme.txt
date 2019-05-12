@@ -35,3 +35,9 @@ then the readme file dlib code present in other folder
 
 
 write code to add the shape predictor file with wget create sh script maybe
+
+
+mention thresold
+mention all the things you are calculating also with flag if possible
+arrange the code better (create a helper file)
+
