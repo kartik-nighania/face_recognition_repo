@@ -19,45 +19,47 @@ import os
 (lStart, lEnd) = face_utils.FACIAL_LANDMARKS_IDXS["left_eye"]
 (rStart, rEnd) = face_utils.FACIAL_LANDMARKS_IDXS["right_eye"]
 
-def recognize_face(frame, data):
-	rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-	rgb = imutils.resize(frame, width=750)
-	r = frame.shape[1] / float(rgb.shape[1])
+def recognize_face(frame, data, rect):
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    #rgb = imutils.resize(frame, width=750)
 
-	# detect the (x, y)-coordinates of the bounding boxes
-	# corresponding to each face in the input frame, then compute
-	# the facial embeddings for each face
-	boxes = face_recognition.face_locations(rgb,
-		model="cnn")
-	encodings = face_recognition.face_encodings(rgb, boxes)
-	names = []
+    # detect the (x, y)-coordinates of the bounding boxes
+    # corresponding to each face in the input frame, then compute
+    # the facial embeddings for each face
 
-	# loop over the facial embeddings
-	for encoding in encodings:
-		# attempt to match each face in the input image to our known
-		# encodings
-		matches = face_recognition.compare_faces(data["encodings"],
-			encoding)
-		name = "Unknown"
+    # box by face_recognition is replaced by dlib box found and
+    # converted in list format of face_recognition api by the function 
+    #boxes = face_recognition.face_locations(rgb, model="cnn")
+    boxes = rect_to_face_recog(rect)
+    encodings = face_recognition.face_encodings(rgb, boxes)
+    names = []
 
-		# check to see if we have found a match
-		if True in matches:
-			# find the indexes of all matched faces then initialize a
-			# dictionary to count the total number of times each face
-			# was matched
-			matchedIdxs = [i for (i, b) in enumerate(matches) if b]
-			counts = {}
+    # loop over the facial embeddings
+    for encoding in encodings:
+        # attempt to match each face in the input image to our known
+        # encodings
+        matches = face_recognition.compare_faces(data["encodings"],
+            encoding)
+        name = "Unknown"
 
-			# loop over the matched indexes and maintain a count for
-			# each recognized face face
-			for i in matchedIdxs:
-				name = data["names"][i]
-				counts[name] = counts.get(name, 0) + 1
+        # check to see if we have found a match
+        if True in matches:
+            # find the indexes of all matched faces then initialize a
+            # dictionary to count the total number of times each face
+            # was matched
+            matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+            counts = {}
 
-			# determine the recognized face with the largest number
-			# of votes (note: in the event of an unlikely tie Python
-			# will select first entry in the dictionary)
-			return max(counts, key=counts.get)
+            # loop over the matched indexes and maintain a count for
+            # each recognized face face
+            for i in matchedIdxs:
+                name = data["names"][i]
+                counts[name] = counts.get(name, 0) + 1
+
+            # determine the recognized face with the largest number
+            # of votes (note: in the event of an unlikely tie Python
+            # will select first entry in the dictionary)
+            return max(counts, key=counts.get)
 
 def eye_aspect_ratio(shape):
 
@@ -158,3 +160,9 @@ def draw_face_landmarks(frame, shape):
 	# and draw them on the image
 	for (x, y) in shape:
 		cv2.circle(frame, (x, y), 1, (0, 0, 255), -1)
+
+
+def rect_to_face_recog(rect):
+	rect_face_list = [rect.tl_corner().y, rect.br_corner().x, rect.br_corner().y, rect.tl_corner().x]
+	rect_face_list = [point if point > 0 else 0 for point in rect_face_list]
+	return [tuple(rect_face_list)]

@@ -17,7 +17,7 @@ face landmark detection to make sure face looks straight and front.
 # blink and then a second constant for the number of consecutive
 # frames the eye must be below the threshold
 EYE_AR_THRESH = 0.2
-EYE_AR_CONSEC_FRAMES = 3
+EYE_AR_CONSEC_FRAMES = 2
 
 # face size aspect ratio to frame. Only save image if above threshold.
 FACE_AR_THRESH = 0.25
@@ -136,7 +136,7 @@ while True:
 			if(ear > EYE_AR_THRESH and far > FACE_AR_THRESH):
 
 				# RECOGNIZE THE PERSON
-				name = recognize_face(frame, data)
+				name = recognize_face(frame, data, rect)
 				print(name)
 				# the name is the file name in dataset folder. 
 				# take the image and resize it to passport size.
